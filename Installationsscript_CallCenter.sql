@@ -1,13 +1,13 @@
 --beim ersten Ausführen die drop tables auskommentieren
 
--- DROP TABLE TicketAnruf;
--- DROP TABLE Ticket;
--- DROP TABLE Anruf;
--- DROP TABLE Mitarbeiter;
--- DROP TABLE Kunde;
--- DROP TABLE Abteilung;
--- DROP TABLE Problemkategorie;
--- DROP TABLE Status;
+DROP TABLE TicketAnruf CASCADE CONSTRAINTS;
+DROP TABLE Ticket CASCADE CONSTRAINTS;
+DROP TABLE Anruf CASCADE CONSTRAINTS;
+DROP TABLE Mitarbeiter CASCADE CONSTRAINTS;
+DROP TABLE Kunde CASCADE CONSTRAINTS;
+DROP TABLE Abteilung CASCADE CONSTRAINTS;
+DROP TABLE Problemkategorie CASCADE CONSTRAINTS;
+DROP TABLE Status CASCADE CONSTRAINTS;
 
 CREATE TABLE Problemkategorie (
                                   ProblemkategorieId INT PRIMARY KEY,
@@ -50,7 +50,7 @@ CREATE TABLE Mitarbeiter(
 
 CREATE TABLE Anruf(
     AnrufId INT PRIMARY KEY,
-    Datum CHAR(10) NOT NULL,
+    Datum DATE NOT NULL,
     Uhrzeit TIMESTAMP NOT NULL,
     DauerSekunden DECIMAL(5) NOT NULL,
     KundenId INT, --wenn Kunde nicht mehr Kunde, Anruf noch für Statistik
@@ -166,9 +166,9 @@ UPDATE ABTEILUNG SET ABTEILUNGSLEITER = 2 WHERE ABTEILUNGSID = 1;
 UPDATE ABTEILUNG SET ABTEILUNGSLEITER = 1 WHERE ABTEILUNGSID = 2;
 UPDATE ABTEILUNG SET ABTEILUNGSLEITER = 3 WHERE ABTEILUNGSID = 3;
 
-INSERT INTO Anruf VALUES (1, '2025-08-10', '12:15:00', 312, 1, 2);
-INSERT INTO Anruf VALUES (2, '2025-06-01', '14:31:12', 5574, 2, 3);
-INSERT INTO Anruf VALUES (3, '2025-10-12', '16:42:52', 2259, 3, 1);
+INSERT INTO Anruf VALUES (1, TO_DATE('2025-08-10', 'YYYY-MM-DD'), TO_TIMESTAMP('2025-08-10 12:15:00', 'YYYY-MM-DD HH24:MI:SS'), 312, 1, 2);
+INSERT INTO Anruf VALUES (2, TO_DATE('2025-06-01', 'YYYY-MM-DD'), TO_TIMESTAMP('2025-06-01 14:31:12', 'YYYY-MM-DD HH24:MI:SS'), 5574, 2, 3);
+INSERT INTO Anruf VALUES (3, TO_DATE('2025-10-12', 'YYYY-MM-DD'), TO_TIMESTAMP('2025-10-12 16:42:52', 'YYYY-MM-DD HH24:MI:SS'), 2259, 3, 1);
 
 INSERT INTO Ticket VALUES (1, 3, 1, 1, 'Waschmaschine kaputt', '1. Auftrag eingetragen\n2. Auftrag weitergeleitet', 4);
 INSERT INTO Ticket VALUES (2, 1, 2, 2, 'Zigarettenautomat kaputt', '1. Auftrag eingetragen\n2. Auftrag weitergeleitet', 2);
