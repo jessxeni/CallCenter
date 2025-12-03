@@ -1,0 +1,8 @@
+-- INSERT INTO TicketAnruf VALUES (1, 1, 1);
+-- INSERT INTO Kunde (Nachname, Telefonnummer, Email) VALUES ('Peter', '0221999985', 'hans.peter@web.de');
+-- DELETE FROM Status WHERE STATUSID = 1;
+-- INSERT INTO Kunde (Vorname, Nachname, Telefonnummer, Email) VALUES ('Hans', 'Peter', '0221999985', 'hans.peter');
+-- INSERT INTO Kunde (Vorname, Nachname) VALUES ('Hans', 'Peter');
+-- INSERT INTO Anruf (DATUMUHRZEIT, DAUERSEKUNDEN, KUNDENID, MITARBEITERID) VALUES (TO_TIMESTAMP('01-12-2024 13:00:00'), -5, 1, 1);
+-- INSERT INTO TICKETANRUF (TICKETID, ANRUFID) VALUES (100, 50)J
+-- INSERT INTO Status (BEZEICHNUNG) VALUES ('Erstellt')

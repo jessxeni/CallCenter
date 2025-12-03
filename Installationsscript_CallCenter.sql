@@ -1,3 +1,6 @@
+/* Call Center von Tom Joost, Leon Walger, Jess Schäfer*/
+
+
 --beim ersten Ausführen die drop tables auskommentieren
 
 DROP TABLE TicketAnruf CASCADE CONSTRAINTS PURGE;
@@ -173,7 +176,7 @@ INSERT INTO Ticket (ProblemkategorieId, MitarbeiterId, KundenId, Beschreibung, P
 INSERT INTO Ticket (ProblemkategorieId, MitarbeiterId, KundenId, Beschreibung, Problemlösungsschritte, StatusId) VALUES (1, 2, 2, 'Zigarettenautomat kaputt', '1. Auftrag eingetragen\n2. Auftrag weitergeleitet', 2);
 INSERT INTO Ticket (ProblemkategorieId, MitarbeiterId, KundenId, Beschreibung, Problemlösungsschritte, StatusId) VALUES (2, 3, 2, 'Zigarettenausgabe einstellen', '1. Auftrag eingetragen\n2. Auftrag weitergeleitet', 2);
 INSERT INTO Ticket (ProblemkategorieId, MitarbeiterId, KundenId, Beschreibung, Problemlösungsschritte, StatusId) VALUES (2, 1, 3, 'Wie funktioniert der Spiderman-Anzug', '1. Auf FAQ-Seite verwiesen', 4);
-INSERT INTO Ticket (ProblemkategorieId, MitarbeiterId, KundenId, Beschreibung, Problemlösungsschritte, StatusId) VALUES (3, 1, 3, 'Rücksendung vom Anzug', '1. Auftrag erstellt und Kunde Etikette ausgedruckt', 1);
+INSERT  INTO Ticket (ProblemkategorieId, MitarbeiterId, KundenId, Beschreibung, Problemlösungsschritte, StatusId) VALUES (3, 1, 3, 'Rücksendung vom Anzug', '1. Auftrag erstellt und Kunde Etikette ausgedruckt', 1);
 
 INSERT INTO TicketAnruf (TicketId, AnrufId) VALUES (1, 1);
 INSERT INTO TicketAnruf (TicketId, AnrufId) VALUES (2, 2);
