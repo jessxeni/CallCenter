@@ -38,3 +38,74 @@ Having 1 < COUNT(DISTINCT a.AnrufId)
 GROUP BY m.Vorname, m.Nachname;
 
 COMMIT;
+
+UPDATE Mitarbeiter SET VORGESETZTERID = 3 Where MITARBEITERID = 5;
+INSERT INTO Mitarbeiter (VORGESETZTERID, ABTEILUNGSID, NACHNAME, VORNAME) VALUES (1, 1, '3.Ebene', '3.Ebene');
+INSERT INTO Mitarbeiter (VORGESETZTERID, ABTEILUNGSID, NACHNAME, VORNAME) VALUES (4, 1, '2.Ebene', '2.Ebene');
+INSERT INTO Mitarbeiter (VORGESETZTERID, ABTEILUNGSID, NACHNAME, VORNAME) VALUES (7, 1, '3.Ebene', '3.Ebene');
+INSERT INTO Mitarbeiter (VORGESETZTERID, ABTEILUNGSID, NACHNAME, VORNAME) VALUES (7, 1, '3.Ebene', '3.Ebene');
+
+COMMIT;
+
+--Tiefensuche
+SELECT * FROM MITARBEITER
+START WITH VORGESETZTERID = 4
+CONNECT BY PRIOR MITARBEITERID = VORGESETZTERID;
+
+--Breitensuche
+WITH Tabelle (MitarbeiterId, VorgesetzterId) AS (
+SELECT MITARBEITERID, VORGESETZTERID
+    FROM MITARBEITER
+    WHERE MITARBEITERID = 4
+UNION ALL
+SELECT m.MITARBEITERID, m.VORGESETZTERID
+FROM MITARBEITER m
+         JOIN Tabelle t ON m.VORGESETZTERID = t.MitarbeiterId
+)
+SEARCH BREADTH FIRST BY MitarbeiterId SET order1
+    SELECT * FROM Tabelle;
+
+create or replace function Tiefensuche (i_MitarbeiterId in integer)
+    RETURN varchar2
+    AS
+    Ergebnis varchar2(4000);
+    CURSOR MitarbeiterCursor IS
+        SELECT * FROM MITARBEITER
+        START WITH VORGESETZTERID = i_MitarbeiterId
+        CONNECT BY PRIOR MITARBEITERID = VORGESETZTERID;
+BEGIN
+    Ergebnis := '';
+    FOR m in MitarbeiterCursor LOOP
+        Ergebnis := Ergebnis || m.MITARBEITERID || '; ';
+        END LOOP;
+    RETURN Ergebnis;
+END Tiefensuche;
+
+create or replace function Breitensuche (i_MitarbeiterId in integer)
+    RETURN varchar2
+AS
+    Ergebnis varchar2(4000);
+    CURSOR MitarbeiterCursor IS
+        WITH Tabelle (MitarbeiterId, VorgesetzterId) AS (
+            SELECT MITARBEITERID, VORGESETZTERID
+            FROM MITARBEITER
+            WHERE MITARBEITERID = 4
+            UNION ALL
+            SELECT m.MITARBEITERID, m.VORGESETZTERID
+            FROM MITARBEITER m
+                     JOIN Tabelle t ON m.VORGESETZTERID = t.MitarbeiterId
+        )
+        SEARCH BREADTH FIRST BY MitarbeiterId SET order1
+        SELECT * FROM Tabelle;
+BEGIN
+    Ergebnis := '';
+    FOR m in MitarbeiterCursor LOOP
+            Ergebnis := Ergebnis || m.MITARBEITERID || '; ';
+        END LOOP;
+    RETURN Ergebnis;
+END Breitensuche;
+
+COMMIT;
+
+SELECT Tiefensuche(4) FROM dual;
+SELECT Breitensuche(4) FROM dual;
