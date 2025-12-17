@@ -11,7 +11,12 @@ WHERE m.VORGESETZTERID = 1;
 
 --pro Mitarbeiter: Anzahl Anrufe, Anzahl Tickets, Abteilung
 
-SELECT m.Vorname, m.Nachname, Count(a.AnrufId), Count(t.TicketId), Abteilung.ABTEILUNGSNAME
+INSERT INTO MITARBEITER (VORGESETZTERID, ABTEILUNGSID, NACHNAME, VORNAME)
+VALUES (1, 3, 'Test', 'Test');
+INSERT INTO ANRUF (DATUMUHRZEIT, DAUERSEKUNDEN, KUNDENID, MITARBEITERID)
+VALUES (Timestamp '2025-07-01 14:33:12.000000', 20, 2, 3);
+
+SELECT m.Vorname, m.Nachname, Count(DISTINCT a.AnrufId), Count(DISTINCT t.TicketId), Abteilung.ABTEILUNGSNAME
 From Mitarbeiter m
     Left Join Ticket t ON m.MITARBEITERID = t.MITARBEITERID
     Left Join Anruf a ON m.MITARBEITERID = a.MITARBEITERID
@@ -22,7 +27,11 @@ GROUP BY m.Vorname, m.Nachname, Abteilung.ABTEILUNGSNAME;
 INSERT INTO ANRUF (DATUMUHRZEIT, DAUERSEKUNDEN, KUNDENID, MITARBEITERID)
 VALUES (Timestamp '2025-07-01 14:33:12.000000', 420, 2, 2);
 
-SELECT m.Vorname, m.Nachname
+SELECT m.Vorname, m.Nachname,
+       (SELECT COUNT(*)
+           FROM Anruf a
+           WHERE a.MITARBEITERID = m.MITARBEITERID
+       ) AS AnrufCount
 From Mitarbeiter m
 WHERE 1 < ALL (SELECT Count(AnrufId) From Anruf Where Anruf.MITARBEITERID = m.MITARBEITERID);
 
@@ -31,13 +40,20 @@ SELECT AnrufId, DAUERSEKUNDEN FROM ANRUF WHERE DAUERSEKUNDEN = (SELECT Min(DAUER
 UNION
 SELECT AnrufId, DAUERSEKUNDEN FROM ANRUF WHERE DAUERSEKUNDEN = (SELECT Max(DAUERSEKUNDEN) FROM Anruf);
 
---
+INSERT INTO ANRUF (DATUMUHRZEIT, DAUERSEKUNDEN, KUNDENID, MITARBEITERID)
+VALUES (Timestamp '2025-12-12 14:53:12.000000', 6000, 2, 3);
+
+-- Mitarbeiter, die mehr als einen Anruf haben und von denen Anzahl Anrufe und Anzahl Tickets
 SELECT m.Vorname, m.Nachname, COUNT(DISTINCT a.AnrufId) AS AnzahlAnrufe, COUNT(DISTINCT t.TicketId) AS AnzahlTickets
 FROM Mitarbeiter m
          LEFT JOIN Ticket t ON m.MitarbeiterId = t.MitarbeiterId
          LEFT JOIN Anruf a ON m.MitarbeiterId = a.MitarbeiterId
 Having 1 < COUNT(DISTINCT a.AnrufId)
 GROUP BY m.Vorname, m.Nachname;
+
+INSERT INTO ANRUF (DATUMUHRZEIT, DAUERSEKUNDEN, KUNDENID, MITARBEITERID)
+VALUES (Timestamp '2025-10-12 14:53:00.000000', 300, 2, 1);
+
 
 COMMIT;
 
@@ -111,3 +127,5 @@ COMMIT;
 
 SELECT Tiefensuche(4) FROM dual;
 SELECT Breitensuche(4) FROM dual;
+
+INSERT INTO Mitarbeiter (VORGESETZTERID, ABTEILUNGSID, NACHNAME, VORNAME) VALUES (8, 1, '3.Ebene', '3.Ebene');
