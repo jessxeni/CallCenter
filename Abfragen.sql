@@ -1,3 +1,5 @@
+/* Call Center von Tom Joost, Leon Walger, Jess Schäfer*/
+
 INSERT INTO ANRUF (DATUMUHRZEIT, DAUERSEKUNDEN, KUNDENID, MITARBEITERID)
 VALUES (Timestamp '2025-07-01 14:31:12.000000', 420, 2, 3);
 
